@@ -45,6 +45,9 @@ public class DefaultGenerator extends AbstractGenerator implements Generator {
         this.swagger = opts.getSwagger();
         this.config = opts.getConfig();
         this.config.additionalProperties().putAll(opts.getOpts().getProperties());
+        //change by raghu begins
+        adjustToBoolean("async");
+        //change by raghu ends
 
         String ignoreFileLocation = this.config.getIgnoreFilePathOverride();
         if (ignoreFileLocation != null) {
@@ -62,6 +65,8 @@ public class DefaultGenerator extends AbstractGenerator implements Generator {
 
         return this;
     }
+    
+    
 
     /**
      * Programmatically disable the output of .swagger-codegen/VERSION, .swagger-codegen-ignore,
@@ -1062,4 +1067,40 @@ public class DefaultGenerator extends AbstractGenerator implements Generator {
         config.postProcessModels(objs);
         return objs;
     }
+    //new method added by raghu
+    public void adjustToBoolean(String propertyName)
+    {
+    	Object object = this.config.additionalProperties().get(propertyName);
+    	Boolean val=Boolean.FALSE;
+    	if(object!=null)
+    	{
+    		if(object instanceof String)
+    		{
+    			String string=(String) object;
+    			if(string.equalsIgnoreCase("true"))
+    			{
+    				val=true;
+    			}
+    			else
+    			{
+    				val=Boolean.FALSE;
+    			}
+    		}
+    		else if(object instanceof Boolean)
+    		{
+    			val=(Boolean) object;
+    		}
+    		else
+    		{
+    			val=Boolean.TRUE;
+    		}
+    	}
+    	else
+    	{
+    		val=Boolean.FALSE;
+    	}
+    	this.config.additionalProperties().put(propertyName, val);
+    	
+    }
+
 }
