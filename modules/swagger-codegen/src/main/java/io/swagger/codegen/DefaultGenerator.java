@@ -44,6 +44,24 @@ public class DefaultGenerator extends AbstractGenerator implements Generator {
         this.opts = opts;
         this.swagger = opts.getSwagger();
         this.config = opts.getConfig();
+        /*
+         * below temporary code is added by raghu to examine the additional properties and show the problem
+         */
+        LOGGER.info("showing the additional properties");
+        Set<String> keySet = this.config.additionalProperties().keySet();
+        for (String key : keySet) 
+        {
+        	Object val = this.config.additionalProperties().get(key);
+        	String type=null;
+        	if(val!=null)
+        	{
+        		type=val.getClass().getName();
+        	}
+        	LOGGER.info(key +" has value of["+val+"] having type ["+type+"]");
+		}
+        /*
+         * above temporary code is added by raghu to examine the additional properties and show the problem
+         */
         this.config.additionalProperties().putAll(opts.getOpts().getProperties());
 
         String ignoreFileLocation = this.config.getIgnoreFilePathOverride();
